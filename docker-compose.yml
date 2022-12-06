@@ -1,0 +1,15 @@
+version: "3.5"
+services:
+  go_course_product:
+    platform: linux/amd64
+    container_name: go_course_product
+    build: 
+      context: ./.dockers/mysql
+      dockerfile: Dockerfile
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: go_course_product
+    ports:
+      - "3340:3306"
+    volumes:
+      - ./.dockers/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql

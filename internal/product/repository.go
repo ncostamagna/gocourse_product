@@ -50,7 +50,9 @@ func (r *repo) GetAll(filters Filters, offset, limit int) ([]domain.Product, err
 	tx := r.db.Model(&c)
 	tx = applyFilters(tx, filters)
 	tx = tx.Limit(limit).Offset(offset)
-	result := tx.Order("create_at desc").Find(&c)
+
+	// el campo es created_at
+	result := tx.Order("created_at desc").Find(&c)
 
 	if result.Error != nil {
 		return nil, result.Error
@@ -112,7 +114,11 @@ func applyFilters(tx *gorm.DB, filters Filters) *gorm.DB {
 
 	if filters.Name != "" {
 		filters.Name = fmt.Sprintf("%%%s%%", strings.ToLower(filters.Name))
-		tx = tx.Where("lower(name) = ?", filters.Name)
+
+		// si usamos = tiene que ser el valor exacto
+		// para filtrar palabras que contentan el valor enviado
+		// usamos like
+		tx = tx.Where("lower(name) like ?", filters.Name)
 	}
 
 	return tx

@@ -8,12 +8,15 @@ import (
 )
 
 type Product struct {
-	ID       string         `json:"id" gorm:"type:char(36)"`
-	Name     string         `json:"name" gorm:"type:char(50);not null"`
-	Price    float64        `json:"price"`
-	CreateAt *time.Time     `json:"-"`
-	UpdateAt *time.Time     `json:"-"`
-	Deleted  gorm.DeletedAt `json:"-"`
+	// Faltaba definir en el Tag de gorm, que es un campo clave
+	ID    string  `json:"id" gorm:"type:char(36);not null;primary_key;unique_index"`
+	Name  string  `json:"name" gorm:"type:char(50);not null"`
+	Price float64 `json:"price"`
+	// Para que gorm tome los campos de creacion y actualizacion
+	// hay que nombrarlos CreatedAt y UpdatedAt
+	CreatedAt *time.Time     `json:"-"`
+	UpdatedAt *time.Time     `json:"-"`
+	Deleted   gorm.DeletedAt `json:"-"`
 }
 
 func (c *Product) BeforeCreate(tx *gorm.DB) (err error) {

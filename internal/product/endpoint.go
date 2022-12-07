@@ -31,8 +31,9 @@ type (
 	}
 
 	UpdateReq struct {
-		Name  *string  `json:"name"`
-		Price *float64 `json:"pric"`
+		Name *string `json:"name"`
+		// Estaba mal escrito el nombre del campo en el tag json
+		Price *float64 `json:"price"`
 	}
 
 	Response struct {
@@ -109,8 +110,9 @@ func makeGetAllEndpoint(s Service) Controller {
 
 		v := r.URL.Query()
 
+		// El query string que esperamos es 'name'
 		filters := Filters{
-			Name: v.Get("value"),
+			Name: v.Get("name"),
 		}
 
 		limit, _ := strconv.Atoi(v.Get("limit"))
@@ -154,6 +156,13 @@ func makeUpdateEndpoint(s Service) Controller {
 		if req.Name != nil && *req.Name == "" {
 			w.WriteHeader(400)
 			json.NewEncoder(w).Encode(&Response{Status: 400, Err: "name is required"})
+			return
+		}
+
+		// Validamos el campo precio (misma validacion que en el create)
+		if req.Price != nil && *req.Price <= 0 {
+			w.WriteHeader(400)
+			json.NewEncoder(w).Encode(&Response{Status: 400, Err: "price must be greater than 0"})
 			return
 		}
 

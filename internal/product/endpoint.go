@@ -32,7 +32,7 @@ type (
 
 	UpdateReq struct {
 		Name  *string  `json:"name"`
-		Price *float64 `json:"price"`
+		Price *float64 `json:"pric"`
 	}
 
 	Response struct {
@@ -110,7 +110,7 @@ func makeGetAllEndpoint(s Service) Controller {
 		v := r.URL.Query()
 
 		filters := Filters{
-			Name: v.Get("name"),
+			Name: v.Get("value"),
 		}
 
 		limit, _ := strconv.Atoi(v.Get("limit"))
@@ -154,12 +154,6 @@ func makeUpdateEndpoint(s Service) Controller {
 		if req.Name != nil && *req.Name == "" {
 			w.WriteHeader(400)
 			json.NewEncoder(w).Encode(&Response{Status: 400, Err: "name is required"})
-			return
-		}
-
-		if req.Price != nil && *req.Price <= 0 {
-			w.WriteHeader(400)
-			json.NewEncoder(w).Encode(&Response{Status: 400, Err: "price must be greater than 0"})
 			return
 		}
 

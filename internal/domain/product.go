@@ -8,12 +8,12 @@ import (
 )
 
 type Product struct {
-	ID        string         `json:"id" gorm:"type:char(36);not null;primary_key;unique_index"`
-	Name      string         `json:"name" gorm:"type:char(50);not null"`
-	Price     float64        `json:"price"`
-	CreatedAt *time.Time     `json:"-"`
-	UpdatedAt *time.Time     `json:"-"`
-	Deleted   gorm.DeletedAt `json:"-"`
+	ID       string         `json:"id" gorm:"type:char(36)"`
+	Name     string         `json:"name" gorm:"type:char(50);not null"`
+	Price    float64        `json:"price"`
+	CreateAt *time.Time     `json:"-"`
+	UpdateAt *time.Time     `json:"-"`
+	Deleted  gorm.DeletedAt `json:"-"`
 }
 
 func (c *Product) BeforeCreate(tx *gorm.DB) (err error) {

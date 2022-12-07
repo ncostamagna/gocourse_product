@@ -27,7 +27,7 @@ func main() {
 	productEnd := product.MakeEndpoints(productSrv)
 
 	router.HandleFunc("/products", productEnd.Create).Methods("POST")
-	router.HandleFunc("/products/{id}", productEnd.Get).Methods("GET")
+	router.HandleFunc("/products/{key}", productEnd.Get).Methods("GET")
 	router.HandleFunc("/products", productEnd.GetAll).Methods("GET")
 	router.HandleFunc("/products/{id}", productEnd.Update).Methods("PATCH")
 	router.HandleFunc("/products/{id}", productEnd.Delete).Methods("DELETE")
